@@ -57,7 +57,7 @@ sequenceDiagram
 | GovToken | [`0x0b90Ec52dda3814B8d3A6021F8e3C5d663AD4936`](https://sepolia.etherscan.io/address/0x0b90Ec52dda3814B8d3A6021F8e3C5d663AD4936) | Sepolia Etherscan |
 | DAOVoting | [`0x4e0fFBb9c95Ad2bb2bf3Af6746551a3357F84756`](https://sepolia.etherscan.io/address/0x4e0fFBb9c95Ad2bb2bf3Af6746551a3357F84756) | Sepolia Etherscan |
 
-Update these values in `frontend/.env.local` if you redeploy.
+
 
 ## Local Development Setup
 
