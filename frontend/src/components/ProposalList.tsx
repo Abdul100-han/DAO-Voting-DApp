@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { usePublicClient, useReadContracts } from "wagmi";
 import type { Address, Hex, PublicClient } from "viem";
+import { CastVote } from "@/components/CastVote";
 import { DAO_VOTING_ABI, DAO_VOTING_ADDRESS } from "@/constants/contracts";
 
 const LOG_FROM_BLOCK = BigInt(
@@ -207,6 +208,11 @@ export function ProposalList() {
                   </dd>
                 </div>
               </dl>
+
+              <CastVote
+                proposalId={proposal.proposalId}
+                proposalState={status}
+              />
             </article>
           );
         })}
