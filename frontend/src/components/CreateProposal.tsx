@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { isAddress, isHex } from "viem";
+import { isAddress, isHex, type Address, type Hex } from "viem";
 import { useAccount, useWaitForTransactionReceipt, useWriteContract } from "wagmi";
 import {
   DAO_VOTING_ABI,
   DAO_VOTING_ADDRESS,
   GOV_TOKEN_ADDRESS,
 } from "@/constants/contracts";
+import { formatTxError } from "@/lib/errors";
 
 const SEPOLIA_EXPLORER = "https://sepolia.etherscan.io/tx";
 
@@ -23,7 +24,7 @@ export function CreateProposal() {
   const { isConnected } = useAccount();
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(true);
-  const [target, setTarget] = useState(GOV_TOKEN_ADDRESS);
+  const [target, setTarget] = useState<string>(GOV_TOKEN_ADDRESS);
   const [value, setValue] = useState("0");
   const [calldata, setCalldata] = useState("0x");
   const [description, setDescription] = useState(
@@ -76,9 +77,9 @@ export function CreateProposal() {
       abi: DAO_VOTING_ABI,
       functionName: "propose",
       args: [
-        [target],
+        [target as Address],
         [BigInt(value.trim())],
-        [parsedCalldata],
+        [parsedCalldata as Hex],
         description.trim(),
       ],
     });
@@ -195,7 +196,7 @@ export function CreateProposal() {
             )}
             {error && (
               <p className="rounded-lg bg-red-50 px-3 py-2 text-red-700 dark:bg-red-950/50 dark:text-red-300">
-                {error.shortMessage ?? error.message}
+                {formatTxError(error)}
               </p>
             )}
           </div>

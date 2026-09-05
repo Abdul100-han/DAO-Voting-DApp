@@ -5,6 +5,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { isAddress, type Address } from "viem";
 import { useAccount, useWaitForTransactionReceipt, useWriteContract } from "wagmi";
 import { GOV_TOKEN_ABI, GOV_TOKEN_ADDRESS } from "@/constants/contracts";
+import { formatTxError } from "@/lib/errors";
 
 const SEPOLIA_EXPLORER = "https://sepolia.etherscan.io/tx";
 
@@ -155,7 +156,7 @@ export function DelegateVotes() {
 
         {error && (
           <p className="rounded-lg bg-red-50 px-3 py-2 text-red-700 dark:bg-red-950/50 dark:text-red-300">
-            {error.shortMessage ?? error.message}
+            {formatTxError(error)}
           </p>
         )}
       </div>

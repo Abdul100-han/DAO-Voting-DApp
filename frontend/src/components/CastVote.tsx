@@ -15,6 +15,7 @@ import {
   GOV_TOKEN_ABI,
   GOV_TOKEN_ADDRESS,
 } from "@/constants/contracts";
+import { formatTxError } from "@/lib/errors";
 
 const SEPOLIA_EXPLORER = "https://sepolia.etherscan.io/tx";
 
@@ -169,7 +170,7 @@ export function CastVote({ proposalId, proposalState }: CastVoteProps) {
         )}
         {error && (
           <p className="rounded-lg bg-red-50 px-3 py-2 text-red-700 dark:bg-red-950/50 dark:text-red-300">
-            {error.shortMessage ?? error.message}
+            {formatTxError(error)}
           </p>
         )}
       </div>
