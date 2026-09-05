@@ -85,8 +85,9 @@ forge script script/DeployDAO.s.sol --rpc-url sepolia --broadcast --verify
 
 ### Frontend
 
+From the repo root (same layout Vercel uses) or from `frontend/`:
+
 ```bash
-cd frontend
 cp .env.example .env.local
 # set NEXT_PUBLIC_ALCHEMY_SEPOLIA_URL, NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID,
 # NEXT_PUBLIC_GOV_TOKEN_ADDRESS, and NEXT_PUBLIC_DAO_VOTING_ADDRESS
@@ -99,24 +100,20 @@ Open [http://localhost:3000](http://localhost:3000). Connect a wallet on Sepolia
 
 ### Deploy on Vercel (fixes `404: NOT_FOUND`)
 
-This repo is a monorepo. The Next.js app is in `frontend/`, not the repository root. If Vercel’s **Root Directory** is empty, the deployment has no Next.js routes and every URL returns the Vercel `404: NOT_FOUND` page.
+The repository root is now a Next.js app (it uses `frontend/src`). Push these files, then in Vercel:
 
-Do this in the Vercel dashboard (required — it cannot be set from git alone):
-
-1. Open the project → **Settings → General**.
-2. **Root Directory** → **Edit** → `frontend` → **Save**.
-3. **Framework Preset** → **Next.js**.
-4. Leave **Build Command** as `npm run build` and **Output Directory** empty.
-5. **Settings → Environment Variables** (Production + Preview):
+1. **Settings → General → Root Directory** → leave **empty** (do not set it to `frontend` unless you prefer that).
+2. **Framework Preset** → **Next.js**.
+3. **Settings → Environment Variables** (Production + Preview):
    - `NEXT_PUBLIC_ALCHEMY_SEPOLIA_URL`
    - `NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID`
    - `NEXT_PUBLIC_GOV_TOKEN_ADDRESS`
    - `NEXT_PUBLIC_DAO_VOTING_ADDRESS`
-6. **Deployments** → latest deployment → **⋯ → Redeploy**. Turn **off** “Use existing Build Cache”.
+4. **Deployments → Redeploy** with **Use existing Build Cache** turned **off**.
 
-The new build log must say it detected Next.js and take more than a few seconds. A ~30ms build with no `next build` means Root Directory is still wrong.
+The build log must say **Detected Next.js**. A 404 with `Code: NOT_FOUND` means Vercel is still serving an old empty deployment.
 
-Browser console lines from `contentscript.js` (`MaxListenersExceededWarning`, `ObjectMultiplex`) come from a wallet extension (MetaMask), not this app. Ignore them.
+Browser console lines from `contentscript.js` come from MetaMask, not this app.
 
 ## Key Technical Features
 
@@ -135,8 +132,10 @@ The proposal list does not keep a centralized database. It queries `ProposalCrea
 ## Repository Layout
 
 ```text
+package.json  Next.js app at the repo root (what Vercel builds)
+src/          Symlink to frontend/src
 contract/     Foundry project (GovToken, DAOVoting, tests, deploy script)
-frontend/     Next.js App Router client (Wagmi + RainbowKit)
+frontend/     Same Next.js client (local `cd frontend` still works)
 ```
 
 ## License
