@@ -1,3 +1,4 @@
+import { DelegateVotes } from "@/components/DelegateVotes";
 import { Navbar } from "@/components/Navbar";
 import { UserStats } from "@/components/UserStats";
 
@@ -7,6 +8,7 @@ export default function Home() {
       <Navbar />
       <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-8 px-4 py-8 sm:px-6">
         <UserStats />
+        <DelegateVotes />
       </main>
     </div>
   );
