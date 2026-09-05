@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useAccount, useReadContracts } from "wagmi";
 import { formatEther, type Address, zeroAddress } from "viem";
 import { GOV_TOKEN_ABI, GOV_TOKEN_ADDRESS } from "@/constants/contracts";
@@ -27,6 +28,11 @@ function formatDelegate(delegate: Address | undefined, owner?: Address) {
 
 export function UserStats() {
   const { address, isConnected } = useAccount();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const { data, isLoading } = useReadContracts({
     contracts: [
@@ -58,7 +64,7 @@ export function UserStats() {
   const votes = data?.[1]?.result;
   const delegate = data?.[2]?.result;
 
-  if (!isConnected) {
+  if (!mounted || !isConnected) {
     return (
       <section className="rounded-xl border border-amber-200 bg-amber-50 px-5 py-6 text-amber-950 shadow-sm dark:border-amber-900/60 dark:bg-amber-950/40 dark:text-amber-100">
         <h2 className="text-base font-semibold">Wallet not connected</h2>
