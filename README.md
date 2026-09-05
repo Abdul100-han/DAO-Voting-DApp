@@ -97,6 +97,27 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000). Connect a wallet on Sepolia, delegate GT, then create and vote on proposals.
 
+### Deploy on Vercel (fixes `404: NOT_FOUND`)
+
+This repo is a monorepo. The Next.js app is in `frontend/`, not the repository root. If Vercel’s **Root Directory** is empty, the deployment has no Next.js routes and every URL returns the Vercel `404: NOT_FOUND` page.
+
+Do this in the Vercel dashboard (required — it cannot be set from git alone):
+
+1. Open the project → **Settings → General**.
+2. **Root Directory** → **Edit** → `frontend` → **Save**.
+3. **Framework Preset** → **Next.js**.
+4. Leave **Build Command** as `npm run build` and **Output Directory** empty.
+5. **Settings → Environment Variables** (Production + Preview):
+   - `NEXT_PUBLIC_ALCHEMY_SEPOLIA_URL`
+   - `NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID`
+   - `NEXT_PUBLIC_GOV_TOKEN_ADDRESS`
+   - `NEXT_PUBLIC_DAO_VOTING_ADDRESS`
+6. **Deployments** → latest deployment → **⋯ → Redeploy**. Turn **off** “Use existing Build Cache”.
+
+The new build log must say it detected Next.js and take more than a few seconds. A ~30ms build with no `next build` means Root Directory is still wrong.
+
+Browser console lines from `contentscript.js` (`MaxListenersExceededWarning`, `ObjectMultiplex`) come from a wallet extension (MetaMask), not this app. Ignore them.
+
 ## Key Technical Features
 
 ### Checkpointed votes (`getPastVotes`)
